@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+# a script that installs nginx web server
+
+apt-get update
+
+apt-get install -y nginx
+
+echo "<!DOCTYPE html><html><body><h1>Hello World!</h1></body></html>" > /tmp/hello.html
+
+mv /tmp/hello.html /var/www/html/index.html
+
+if ps ax | grep -v grep | grep nginx > /dev/null; then
+    nginx -s stop
+fi
+
+nginx
+
+if netstat -tuln | grep -q ':80 '; then
+    echo "Nginx is listening on port 80"
+else
+    echo "Nginx is not listening on port 80"
+fi
